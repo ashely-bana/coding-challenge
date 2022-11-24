@@ -242,6 +242,7 @@ export default function ListPools() {
   }
 
   const closeModal = () => {
+    onClose();
     const poolsDataArray = poolsData.concat([poolsDataAdd])
     setPoolsData(poolsDataArray)
   }
@@ -314,7 +315,7 @@ export default function ListPools() {
         </Heading>
         <Button display={{ base: "none", sm: "block" }} onClick={onOpen}>Create New Pool</Button>
       </Flex>
-      <Modal isOpen={isOpen} onClose={onClose} onCloseComplete={closeModal}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>MAdd Pools</ModalHeader>
@@ -363,7 +364,7 @@ export default function ListPools() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onClose}>
+            <Button colorScheme='blue' mr={3} onClick={closeModal}>
               done
             </Button>
             <Button variant='ghost' onClick={onClose}>Cancel</Button>
