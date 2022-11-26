@@ -216,7 +216,7 @@ const PoolsCard = ({ poolsData }: { poolsData: PoolsData[] }) => {
   );
 };
 
-export default function ListPools() {
+export default function ListPools(myPoolStore: any) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [poolsData, setPoolsData] = useState<PoolsData[]>([]);
   const [poolsDataAdd, setPoolsDataAdd] = useState<PoolsData>({
@@ -229,21 +229,53 @@ export default function ListPools() {
     myBoundedAmount: 0,
     longestDaysUnbonding: true,
   });
+  const [asset1, setAsset1] = useState<any>({
+    name: '',
+    imgSrc: ''
+  });
+  const [asset2, setAsset2] = useState<any>({
+    name: '',
+    imgSrc: ''
+  });
 
   const handleChange1 = (event: any, key: string) => {
-    poolsDataAdd[key] = event.target.value
-    console.log(poolsDataAdd)
-    setPoolsDataAdd({ ...poolsDataAdd })
+    // poolsDataAdd[key] = event.target.value
+    // console.log(poolsDataAdd)
+    // setPoolsDataAdd({ ...poolsDataAdd })
+    myPoolStore.PoolStore.poolsDataItem[key] = event.target.value
+    setPoolsDataAdd({ ...myPoolStore.PoolStore.poolsDataItem })
   }
 
   const handleChange2 = (event: any, key1: string, key2: string) => {
-    poolsDataAdd[key1][key2] = event.target.value
-    setPoolsDataAdd({ ...poolsDataAdd })
+    // poolsDataAdd[key1][key2] = event.target.value
+    // setPoolsDataAdd({ ...poolsDataAdd })
+    console.log(asset1, asset2)
+    if (key1 == 'token1') {
+      if (key2 == 'name') {
+        setAsset1(Object.assign(asset1, { name: event.target.value }))
+      }
+      if (key2 == 'imgSrc') {
+        setAsset1(Object.assign(asset1, { imgSrc: event.target.value }))
+      }
+    }
+    if (key1 == 'token2') {
+      if (key2 == 'name') {
+        setAsset2(Object.assign(asset2, { name: event.target.value }))
+      }
+      if (key2 == 'imgSrc') {
+        setAsset2(Object.assign(asset2, { imgSrc: event.target.value }))
+      }
+    }
+    myPoolStore.PoolStore.addPool(asset1, asset2)
+    setPoolsDataAdd({ ...myPoolStore.PoolStore.poolsDataItem })
   }
 
   const closeModal = () => {
+    // onClose();
+    // const poolsDataArray = poolsData.concat([poolsDataAdd])
+    // setPoolsData(poolsDataArray)
     onClose();
-    const poolsDataArray = poolsData.concat([poolsDataAdd])
+    const poolsDataArray = poolsData.concat({ ...poolsDataAdd })
     setPoolsData(poolsDataArray)
   }
 
