@@ -14,6 +14,10 @@ interface PoolsData {
   myBoundedAmount: number;
   longestDaysUnbonding: boolean;
 }
+interface Asset {
+  name: string,
+  imgSrc: string
+}
 class PoolStore {
   poolsDataItem: PoolsData = {
     id: '',
@@ -30,7 +34,7 @@ class PoolStore {
     makeAutoObservable(this)
   }
 
-  addAsset(asset: any) {
+  addAsset(asset: Asset) {
     let tokenLen = 0;
     Object.keys(this.poolsDataItem).forEach(element => {
       if (element.indexOf('token') > -1 && this.poolsDataItem[element].name !== '') {
@@ -41,7 +45,7 @@ class PoolStore {
     this.poolsDataItem['token' + tokenLen].imgSrc = asset.imgSrc
   }
 
-  updateAsset(asset: any) {
+  updateAsset(asset: Asset) {
     Object.keys(this.poolsDataItem).forEach(element => {
       if (this.poolsDataItem[element].name == asset.name) {
         this.poolsDataItem[element].imgSrc = asset.imgSrc
@@ -49,7 +53,7 @@ class PoolStore {
     });
   }
 
-  removeAsset(asset: any) {
+  removeAsset(asset: Asset) {
     Object.keys(this.poolsDataItem).forEach(element => {
       if (this.poolsDataItem[element].name == asset.name) {
         delete this.poolsDataItem[element]
@@ -57,7 +61,7 @@ class PoolStore {
     });
   }
 
-  addPool(asset1: any, asset2: any) {
+  addPool(asset1: Asset, asset2: Asset) {
     this.poolsDataItem.token1.name = asset1.name
     this.poolsDataItem.token1.imgSrc = asset1.imgSrc
     this.poolsDataItem.token2.name = asset2.name
