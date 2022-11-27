@@ -26,6 +26,8 @@ import {
 } from "@chakra-ui/react";
 
 import { chain, assets, asset_list } from '@chain-registry/osmosis';
+import { PoolStore } from '../mobx/store'
+
 interface PoolsData {
   id: string;
   token1: { name: string; imgSrc: string };
@@ -216,7 +218,7 @@ const PoolsCard = ({ poolsData }: { poolsData: PoolsData[] }) => {
   );
 };
 
-export default function ListPools(myPoolStore: any) {
+export default function ListPools(myPoolStore: PoolStore) {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const [poolsData, setPoolsData] = useState<PoolsData[]>([]);
   const [poolsDataAdd, setPoolsDataAdd] = useState<PoolsData>({
@@ -242,8 +244,9 @@ export default function ListPools(myPoolStore: any) {
     // poolsDataAdd[key] = event.target.value
     // console.log(poolsDataAdd)
     // setPoolsDataAdd({ ...poolsDataAdd })
-    myPoolStore.PoolStore.poolsDataItem[key] = event.target.value
-    setPoolsDataAdd({ ...myPoolStore.PoolStore.poolsDataItem })
+    // myPoolStore.PoolStore[key] = event.target.value
+    myPoolStore.PoolStore.setValue(key, event.target.value)
+    setPoolsDataAdd({ ...myPoolStore.PoolStore })
   }
 
   const handleChange2 = (event: any, key1: string, key2: string) => {
@@ -267,7 +270,7 @@ export default function ListPools(myPoolStore: any) {
       }
     }
     myPoolStore.PoolStore.addPool(asset1, asset2)
-    setPoolsDataAdd({ ...myPoolStore.PoolStore.poolsDataItem })
+    setPoolsDataAdd({ ...myPoolStore.PoolStore })
   }
 
   const closeModal = () => {
@@ -275,7 +278,7 @@ export default function ListPools(myPoolStore: any) {
     // const poolsDataArray = poolsData.concat([poolsDataAdd])
     // setPoolsData(poolsDataArray)
     onClose();
-    const poolsDataArray = poolsData.concat({ ...poolsDataAdd })
+    const poolsDataArray = poolsData.concat({ ...myPoolStore.PoolStore })
     setPoolsData(poolsDataArray)
   }
 
@@ -355,43 +358,43 @@ export default function ListPools(myPoolStore: any) {
           <ModalBody>
             <FormControl>
               <FormLabel>id</FormLabel>
-              <Input value={poolsDataAdd.id} onChange={(event) => handleChange1(event, 'id')} />
+              <Input value={myPoolStore.PoolStore.id} onChange={(event) => handleChange1(event, 'id')} />
             </FormControl>
             <FormControl>
               <FormLabel>token1.name</FormLabel>
-              <Input value={poolsDataAdd.token1.name} onChange={(event) => handleChange2(event, 'token1', 'name')} />
+              <Input value={myPoolStore.PoolStore.token1.name} onChange={(event) => handleChange2(event, 'token1', 'name')} />
             </FormControl>
             <FormControl>
               <FormLabel>token1.imgSrc</FormLabel>
-              <Input value={poolsDataAdd.token1.imgSrc} onChange={(event) => handleChange2(event, 'token1', 'imgSrc')} />
+              <Input value={myPoolStore.PoolStore.token1.imgSrc} onChange={(event) => handleChange2(event, 'token1', 'imgSrc')} />
             </FormControl>
             <FormControl>
               <FormLabel>token2.name</FormLabel>
-              <Input value={poolsDataAdd.token2.name} onChange={(event) => handleChange2(event, 'token2', 'name')} />
+              <Input value={myPoolStore.PoolStore.token2.name} onChange={(event) => handleChange2(event, 'token2', 'name')} />
             </FormControl>
             <FormControl>
               <FormLabel>token2.imgSrc</FormLabel>
-              <Input value={poolsDataAdd.token2.imgSrc} onChange={(event) => handleChange2(event, 'token2', 'imgSrc')} />
+              <Input value={myPoolStore.PoolStore.token2.imgSrc} onChange={(event) => handleChange2(event, 'token2', 'imgSrc')} />
             </FormControl>
             <FormControl>
               <FormLabel>poolLiquidity</FormLabel>
-              <Input value={poolsDataAdd.poolLiquidity} onChange={(event) => handleChange1(event, 'poolLiquidity')} />
+              <Input value={myPoolStore.PoolStore.poolLiquidity} onChange={(event) => handleChange1(event, 'poolLiquidity')} />
             </FormControl>
             <FormControl>
               <FormLabel>apr</FormLabel>
-              <Input value={poolsDataAdd.apr} onChange={(event) => handleChange1(event, 'apr')} />
+              <Input value={myPoolStore.PoolStore.apr} onChange={(event) => handleChange1(event, 'apr')} />
             </FormControl>
             <FormControl>
               <FormLabel>myLiquidity</FormLabel>
-              <Input value={poolsDataAdd.myLiquidity} onChange={(event) => handleChange1(event, 'myLiquidity')} />
+              <Input value={myPoolStore.PoolStore.myLiquidity} onChange={(event) => handleChange1(event, 'myLiquidity')} />
             </FormControl>
             <FormControl>
               <FormLabel>myBoundedAmount</FormLabel>
-              <Input value={poolsDataAdd.myBoundedAmount} onChange={(event) => handleChange1(event, 'myBoundedAmount')} />
+              <Input value={myPoolStore.PoolStore.myBoundedAmount} onChange={(event) => handleChange1(event, 'myBoundedAmount')} />
             </FormControl>
             <FormControl>
               <FormLabel>longestDaysUnbonding</FormLabel>
-              <Input value={poolsDataAdd.longestDaysUnbonding} onChange={(event) => handleChange1(event, 'longestDaysUnbonding')} />
+              <Input value={myPoolStore.PoolStore.longestDaysUnbonding} onChange={(event) => handleChange1(event, 'longestDaysUnbonding')} />
             </FormControl>
           </ModalBody>
 
