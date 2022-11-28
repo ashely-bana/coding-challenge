@@ -2,23 +2,11 @@
 import { makeAutoObservable } from "mobx"
 import { observer } from "mobx-react-lite"
 import { observable } from "mobx"
-
-interface PoolsData {
-  id: string;
-  token1: { name: string, imgSrc: string };
-  token2: { name: string, imgSrc: string };
-  poolLiquidity: number;
-  apr: number;
-  myLiquidity: number;
-  myBoundedAmount: number;
-  longestDaysUnbonding: boolean;
-}
 interface Asset {
   name: string,
   imgSrc: string
 }
-
-class PoolStore {
+export class PoolStore {
   id = observable.box('')
   token1 = observable({ name: '', imgSrc: '' })
   token2 = observable({ name: '', imgSrc: '' })
@@ -32,7 +20,7 @@ class PoolStore {
     makeAutoObservable(this)
   }
 
-  setValue(key: string, value: any) {
+  @action setValue(key: string, value: any) {
     this[key] = value
   }
 
